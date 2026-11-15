@@ -8,7 +8,7 @@ made and is still fresh.
 
 **Live demo:** https://loadout-zf6v.onrender.com · **MCP endpoint:** `https://loadout-zf6v.onrender.com/mcp`
 
-(Free hosting: the first visit after a quiet spell takes about a minute to wake up.)
+(Free hosting: the first visit after a quiet spell takes about a minute to wake up.) · **55-second demo:** https://loadout-zf6v.onrender.com/static/demo.mp4
 
 ## Results
 

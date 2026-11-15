@@ -106,6 +106,10 @@ async def index(request: Request) -> FileResponse:
     return FileResponse(WEB / "index.html")
 
 
+async def demo(request: Request) -> FileResponse:
+    return FileResponse(WEB / "demo.html")
+
+
 mcp = MCPServer("loadout", instructions="Ask get_context before a task; call report_run after it.")
 
 
@@ -159,6 +163,7 @@ async def lifespan(app):
 app = Starlette(
     routes=[
         Route("/", index),
+        Route("/demo", demo),
         Route("/healthz", health),
         Route("/api/plan", api_plan, methods=["POST"]),
         Route("/api/run", api_run, methods=["POST"]),
