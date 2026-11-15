@@ -1,0 +1,613 @@
+{
+ "dataset": "ToolLinkOS (573 tools, 1,569 tasks with ground-truth tool sets)",
+ "backend": "KuzuStore",
+ "tasks": 600,
+ "round_size": 25,
+ "tools": 573,
+ "tokens_all": 60861,
+ "plan_ms_p50": 15.3,
+ "plan_ms_p95": 18.7,
+ "seconds": 28.2,
+ "rounds": [
+  {
+   "round": 1,
+   "tasks": 25,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.48,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.48,
+    "tokens": 1246
+   },
+   "graph": {
+    "covered": 0.88,
+    "calls": 6.6,
+    "tokens": 960
+   },
+   "loadout": {
+    "covered": 0.84,
+    "calls": 5.4,
+    "tokens": 901
+   },
+   "memory_hit_rate": 0.287
+  },
+  {
+   "round": 2,
+   "tasks": 50,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.12,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.12,
+    "tokens": 1338
+   },
+   "graph": {
+    "covered": 0.76,
+    "calls": 6.36,
+    "tokens": 939
+   },
+   "loadout": {
+    "covered": 0.8,
+    "calls": 4.92,
+    "tokens": 866
+   },
+   "memory_hit_rate": 0.419
+  },
+  {
+   "round": 3,
+   "tasks": 75,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.0,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.08,
+    "calls": 5.92,
+    "tokens": 1349
+   },
+   "graph": {
+    "covered": 0.92,
+    "calls": 5.08,
+    "tokens": 815
+   },
+   "loadout": {
+    "covered": 0.92,
+    "calls": 3.56,
+    "tokens": 655
+   },
+   "memory_hit_rate": 0.418
+  },
+  {
+   "round": 4,
+   "tasks": 100,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.12,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.12,
+    "tokens": 1275
+   },
+   "graph": {
+    "covered": 0.88,
+    "calls": 6.24,
+    "tokens": 930
+   },
+   "loadout": {
+    "covered": 0.88,
+    "calls": 4.52,
+    "tokens": 742
+   },
+   "memory_hit_rate": 0.43
+  },
+  {
+   "round": 5,
+   "tasks": 125,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.8,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 6.76,
+    "tokens": 1342
+   },
+   "graph": {
+    "covered": 0.84,
+    "calls": 5.96,
+    "tokens": 910
+   },
+   "loadout": {
+    "covered": 0.84,
+    "calls": 4.32,
+    "tokens": 781
+   },
+   "memory_hit_rate": 0.479
+  },
+  {
+   "round": 6,
+   "tasks": 150,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.52,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.48,
+    "tokens": 1282
+   },
+   "graph": {
+    "covered": 0.92,
+    "calls": 6.6,
+    "tokens": 887
+   },
+   "loadout": {
+    "covered": 0.92,
+    "calls": 4.32,
+    "tokens": 690
+   },
+   "memory_hit_rate": 0.476
+  },
+  {
+   "round": 7,
+   "tasks": 175,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.64,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.64,
+    "tokens": 1243
+   },
+   "graph": {
+    "covered": 0.84,
+    "calls": 6.8,
+    "tokens": 920
+   },
+   "loadout": {
+    "covered": 0.84,
+    "calls": 4.92,
+    "tokens": 758
+   },
+   "memory_hit_rate": 0.437
+  },
+  {
+   "round": 8,
+   "tasks": 200,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.96,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.08,
+    "calls": 6.88,
+    "tokens": 1329
+   },
+   "graph": {
+    "covered": 0.92,
+    "calls": 6.04,
+    "tokens": 920
+   },
+   "loadout": {
+    "covered": 0.92,
+    "calls": 4.48,
+    "tokens": 761
+   },
+   "memory_hit_rate": 0.442
+  },
+  {
+   "round": 9,
+   "tasks": 225,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.0,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 6.96,
+    "tokens": 1309
+   },
+   "graph": {
+    "covered": 0.88,
+    "calls": 6.12,
+    "tokens": 925
+   },
+   "loadout": {
+    "covered": 0.88,
+    "calls": 4.96,
+    "tokens": 818
+   },
+   "memory_hit_rate": 0.317
+  },
+  {
+   "round": 10,
+   "tasks": 250,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.76,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 6.76,
+    "tokens": 1224
+   },
+   "graph": {
+    "covered": 0.68,
+    "calls": 6.08,
+    "tokens": 890
+   },
+   "loadout": {
+    "covered": 0.72,
+    "calls": 4.4,
+    "tokens": 765
+   },
+   "memory_hit_rate": 0.458
+  },
+  {
+   "round": 11,
+   "tasks": 275,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.2,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.2,
+    "tokens": 1233
+   },
+   "graph": {
+    "covered": 0.88,
+    "calls": 6.32,
+    "tokens": 905
+   },
+   "loadout": {
+    "covered": 0.88,
+    "calls": 4.6,
+    "tokens": 744
+   },
+   "memory_hit_rate": 0.348
+  },
+  {
+   "round": 12,
+   "tasks": 300,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.44,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.08,
+    "calls": 6.36,
+    "tokens": 1324
+   },
+   "graph": {
+    "covered": 0.96,
+    "calls": 5.48,
+    "tokens": 912
+   },
+   "loadout": {
+    "covered": 0.96,
+    "calls": 4.32,
+    "tokens": 773
+   },
+   "memory_hit_rate": 0.389
+  },
+  {
+   "round": 13,
+   "tasks": 325,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.0,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.08,
+    "calls": 6.92,
+    "tokens": 1245
+   },
+   "graph": {
+    "covered": 0.84,
+    "calls": 6.16,
+    "tokens": 868
+   },
+   "loadout": {
+    "covered": 0.84,
+    "calls": 3.4,
+    "tokens": 657
+   },
+   "memory_hit_rate": 0.403
+  },
+  {
+   "round": 14,
+   "tasks": 350,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.04,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.04,
+    "tokens": 1209
+   },
+   "graph": {
+    "covered": 0.88,
+    "calls": 6.16,
+    "tokens": 926
+   },
+   "loadout": {
+    "covered": 0.88,
+    "calls": 4.48,
+    "tokens": 751
+   },
+   "memory_hit_rate": 0.375
+  },
+  {
+   "round": 15,
+   "tasks": 375,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.32,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.28,
+    "tokens": 1295
+   },
+   "graph": {
+    "covered": 0.92,
+    "calls": 6.4,
+    "tokens": 983
+   },
+   "loadout": {
+    "covered": 0.92,
+    "calls": 3.48,
+    "tokens": 735
+   },
+   "memory_hit_rate": 0.423
+  },
+  {
+   "round": 16,
+   "tasks": 400,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.28,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.24,
+    "tokens": 1213
+   },
+   "graph": {
+    "covered": 0.8,
+    "calls": 6.48,
+    "tokens": 849
+   },
+   "loadout": {
+    "covered": 0.8,
+    "calls": 4.56,
+    "tokens": 701
+   },
+   "memory_hit_rate": 0.375
+  },
+  {
+   "round": 17,
+   "tasks": 425,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.32,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.08,
+    "calls": 6.24,
+    "tokens": 1327
+   },
+   "graph": {
+    "covered": 0.8,
+    "calls": 5.52,
+    "tokens": 880
+   },
+   "loadout": {
+    "covered": 0.8,
+    "calls": 4.04,
+    "tokens": 738
+   },
+   "memory_hit_rate": 0.4
+  },
+  {
+   "round": 18,
+   "tasks": 450,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.28,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.24,
+    "tokens": 1230
+   },
+   "graph": {
+    "covered": 0.88,
+    "calls": 6.4,
+    "tokens": 933
+   },
+   "loadout": {
+    "covered": 0.88,
+    "calls": 4.52,
+    "tokens": 744
+   },
+   "memory_hit_rate": 0.461
+  },
+  {
+   "round": 19,
+   "tasks": 475,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.44,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.4,
+    "tokens": 1322
+   },
+   "graph": {
+    "covered": 0.8,
+    "calls": 6.64,
+    "tokens": 1015
+   },
+   "loadout": {
+    "covered": 0.8,
+    "calls": 5.52,
+    "tokens": 919
+   },
+   "memory_hit_rate": 0.413
+  },
+  {
+   "round": 20,
+   "tasks": 500,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.16,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.16,
+    "tokens": 1375
+   },
+   "graph": {
+    "covered": 0.92,
+    "calls": 6.24,
+    "tokens": 936
+   },
+   "loadout": {
+    "covered": 0.92,
+    "calls": 3.32,
+    "tokens": 613
+   },
+   "memory_hit_rate": 0.39
+  },
+  {
+   "round": 21,
+   "tasks": 525,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.28,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.24,
+    "tokens": 1396
+   },
+   "graph": {
+    "covered": 0.84,
+    "calls": 6.44,
+    "tokens": 915
+   },
+   "loadout": {
+    "covered": 0.84,
+    "calls": 4.08,
+    "tokens": 706
+   },
+   "memory_hit_rate": 0.359
+  },
+  {
+   "round": 22,
+   "tasks": 550,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.28,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 7.28,
+    "tokens": 1220
+   },
+   "graph": {
+    "covered": 0.84,
+    "calls": 6.44,
+    "tokens": 780
+   },
+   "loadout": {
+    "covered": 0.88,
+    "calls": 4.24,
+    "tokens": 618
+   },
+   "memory_hit_rate": 0.355
+  },
+  {
+   "round": 23,
+   "tasks": 575,
+   "all": {
+    "covered": 1.0,
+    "calls": 5.76,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.0,
+    "calls": 6.76,
+    "tokens": 1205
+   },
+   "graph": {
+    "covered": 0.8,
+    "calls": 5.96,
+    "tokens": 808
+   },
+   "loadout": {
+    "covered": 0.8,
+    "calls": 4.24,
+    "tokens": 651
+   },
+   "memory_hit_rate": 0.352
+  },
+  {
+   "round": 24,
+   "tasks": 600,
+   "all": {
+    "covered": 1.0,
+    "calls": 6.12,
+    "tokens": 60861
+   },
+   "bm25": {
+    "covered": 0.04,
+    "calls": 7.08,
+    "tokens": 1199
+   },
+   "graph": {
+    "covered": 0.84,
+    "calls": 6.28,
+    "tokens": 816
+   },
+   "loadout": {
+    "covered": 0.84,
+    "calls": 3.48,
+    "tokens": 561
+   },
+   "memory_hit_rate": 0.329
+  }
+ ]
+}

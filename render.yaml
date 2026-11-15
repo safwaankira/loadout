@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: loadout
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: LOADOUT_EVAL_ON_BOOT
+        value: "1"

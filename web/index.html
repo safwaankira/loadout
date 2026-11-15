@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loadout · the context layer for agents, on HydraDB</title>
+<meta name="description" content="Give your agent only the tools a task needs, and let it remember what it already looked up. Built on HydraDB.">
+<style>
+:root{--bg:#0b0c0e;--panel:#131519;--line:#24272e;--text:#e9eaec;--dim:#9096a1;--accent:#ff5b2e;--green:#3ecf8e;--blue:#6aa8ff;--amber:#f5b94b;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:inherit}.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{display:flex;gap:10px;align-items:center;font-weight:700;letter-spacing:.2px}
+.logo{width:22px;height:22px;border-radius:6px;background:conic-gradient(from 200deg,var(--accent),#ff9a3c,var(--accent))}
+nav a{color:var(--dim);text-decoration:none;margin-left:18px;font-size:14px}nav a:hover{color:var(--text)}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.05;letter-spacing:-1.2px;margin:34px 0 14px;max-width:820px}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{color:var(--dim);font-size:18px;max-width:700px;margin:0 0 28px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:8px 0 26px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat b{display:block;font-size:28px;letter-spacing:-.5px}.stat span{color:var(--dim);font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 22px}
+.card h2{margin:0 0 4px;font-size:19px}.sub{color:var(--dim);font-size:14px;margin:0 0 14px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--dim);margin:6px 0 0}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+svg text{fill:var(--dim);font:11px var(--mono)}
+.try{display:flex;gap:10px}.try input{flex:1;background:#0e1013;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px 14px;font-size:15px}
+button{background:var(--accent);color:#120804;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:14px}
+button.ghost{background:transparent;color:var(--dim);border:1px solid var(--line)}button:disabled{opacity:.5}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}.chip{font-size:12.5px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:5px 10px;cursor:pointer;background:#0e1013}
+.chip:hover{color:var(--text);border-color:#3a3f49}
+.bar{height:10px;border-radius:6px;background:#1c1f25;overflow:hidden;margin:6px 0 4px}.bar div{height:100%;background:var(--accent);border-radius:6px;transition:width .5s}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.col h3{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);margin:0 0 8px}
+.item{border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin:0 0 8px;background:#0e1013;animation:in .35s ease both}
+.item code{font:13px var(--mono)}.item small{display:block;color:var(--dim);font-size:12px;margin-top:2px}
+.tag{font:10.5px var(--mono);padding:2px 6px;border-radius:5px;margin-right:6px;vertical-align:1px}
+.t-target{background:#2a1710;color:var(--accent)}.t-dep{background:#121d2e;color:var(--blue)}.t-mem{background:#0f2219;color:var(--green)}
+.summary{display:flex;gap:18px;flex-wrap:wrap;color:var(--dim);font-size:14px;margin-top:10px}.summary b{color:var(--text)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{border:1px solid var(--line);border-radius:12px;padding:14px;background:#0e1013}
+.step b{display:block;margin-bottom:4px}.step p{margin:0;color:var(--dim);font-size:14px}
+pre{background:#0e1013;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font:13px var(--mono);color:#cfd3da}
+footer{color:var(--dim);font-size:13px;padding:10px 0 40px}
+.pulse{color:var(--green)}@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.out,.steps{grid-template-columns:1fr}.try{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="logo"></div>Loadout</div>
+  <nav><a href="#try">Try it</a><a href="#how">How it works</a><a href="#mcp">Use it</a><a id="gh" href="https://github.com/">GitHub</a></nav>
+</header>
+
+<h1>Your agent has <em>573 tools</em>.<br>This task needs 6. Loadout loads those.</h1>
+<p class="lede">A context layer on HydraDB. It walks the graph from the task to the tools it needs, then skips any lookup the agent already did and is still fresh.</p>
+
+<div class="stats" id="stats">
+  <div class="stat"><b id="s-tok">…</b><span>tool-schema tokens per task, vs <span id="s-all">…</span> for all tools</span></div>
+  <div class="stat"><b id="s-calls">…</b><span>tool calls per task once memory warms up</span></div>
+  <div class="stat"><b id="s-cov">…</b><span>tasks fully covered, vs <span id="s-bm">…</span> for keyword top-12</span></div>
+  <div class="stat"><b id="s-ms">…</b><span>to plan a task, p50, on <span id="s-backend">HydraDB</span></span></div>
+</div>
+
+<div class="card">
+  <h2>It gets cheaper the longer the agent runs</h2>
+  <p class="sub" id="chart-sub">Tool calls per task, each point a round of tasks from one agent session.</p>
+  <svg id="chart" viewBox="0 0 1000 300" width="100%" role="img" aria-label="Tool calls per task by round"></svg>
+  <div class="legend">
+    <span><i style="background:#596070"></i>All 573 tools loaded</span>
+    <span><i style="background:var(--blue)"></i>Graph walk, no memory</span>
+    <span><i style="background:var(--accent)"></i>Loadout (graph walk + memory)</span>
+    <span><i style="background:var(--green)"></i>Lookups answered from memory (right axis)</span>
+  </div>
+</div>
+
+<div class="card" id="try">
+  <h2>Try it: run a task, then run another</h2>
+  <p class="sub">Each run writes back what it looked up. Watch the green items appear on the next task.</p>
+  <div class="try"><input id="task" placeholder="Describe a task, e.g. check if my flight AA456 is on time"><button id="run">Run task</button><button class="ghost" id="reset">Forget</button></div>
+  <div class="chips" id="chips"></div>
+  <div id="result"></div>
+</div>
+
+<div class="card" id="how">
+  <h2>How it works</h2>
+  <p class="sub">Everything below lives in HydraDB and is read by graph traversal on every task.</p>
+  <div class="steps">
+    <div class="step"><b>1 · Tools are a graph</b><p>Every tool is a node. <code>DEPENDS_ON</code> edges say which tool produces a parameter another one needs.</p></div>
+    <div class="step"><b>2 · Plan by traversal</b><p>Find the target tools, walk their dependencies up to 3 hops, then drop any branch whose answer is already in memory.</p></div>
+    <div class="step"><b>3 · Runs write back</b><p>Lookups the run made become <code>Memory</code> nodes with a fresh-until time. A setter (like <code>set_wifi_status</code>) marks its lookup stale.</p></div>
+  </div>
+  <p class="sub" style="margin-top:14px">A vector store can rank tools. It can't tell you that <code>share_location_via_email</code> needs <code>validate_email</code> and <code>get_current_location</code>, or that the location was already fetched 3 minutes ago. Those are edges.</p>
+</div>
+
+<div class="card" id="mcp">
+  <h2>Plug it into your agent</h2>
+  <p class="sub">An MCP server with two tools: <code>get_context(task)</code> before a task, <code>report_run(task, results)</code> after it.</p>
+<pre id="mcpcfg">{
+  "mcpServers": {
+    "loadout": { "type": "http", "url": "https://YOUR-HOST/mcp" }
+  }
+}</pre>
+</div>
+
+<footer>Built on <a href="https://github.com/hydra-db/hydradb">HydraDB</a> (open-source engine) through <a href="https://github.com/hydra-db/selfgraph">selfgraph</a>'s store layer. Tool-graph approach from <a href="https://github.com/SonAIengine/graph-tool-call">graph-tool-call</a>. Benchmark: <a href="https://github.com/EliasLumer/Graph-RAG-Tool-Fusion-ToolLinkOS">ToolLinkOS</a> (573 tools, 1,569 tasks, MIT). Tool runs in the demo return simulated values.</footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+let agent; try{agent=localStorage.getItem('loadout-agent')}catch(e){}
+if(!agent){agent='web-'+Math.random().toString(36).slice(2,10);try{localStorage.setItem('loadout-agent',agent)}catch(e){}}
+$('#mcpcfg').textContent=$('#mcpcfg').textContent.replace('https://YOUR-HOST',location.origin);
+const fmt=n=>n.toLocaleString('en-US');
+
+async function results(){
+  const r=await (await fetch('/api/results')).json();
+  const R=r.rounds, warm=R.slice(2);
+  const avg=(xs,f)=>xs.reduce((a,x)=>a+f(x),0)/xs.length;
+  const tok=avg(warm,x=>x.loadout.tokens), calls0=avg(R,x=>x.all.calls), calls=avg(warm,x=>x.loadout.calls);
+  $('#s-tok').textContent=fmt(Math.round(tok));$('#s-all').textContent=fmt(r.tokens_all);
+  $('#s-calls').textContent=`${calls.toFixed(1)} vs ${calls0.toFixed(1)}`;
+  $('#s-cov').textContent=Math.round(100*avg(R,x=>x.loadout.covered))+'%';$('#s-bm').textContent=Math.round(100*avg(R,x=>x.bm25.covered))+'%';
+  $('#s-ms').textContent=r.plan_ms_p50+' ms';$('#s-backend').textContent=r.backend.replace('Store','');
+  $('#chart-sub').textContent=`Tool calls per task, ${r.tasks} tasks from one agent session, ${r.round_size} per round. Measured on ${r.backend.replace('Store','')}.`;
+  draw(R);
+}
+function draw(R){
+  const W=1000,H=300,L=46,Rp=46,T=14,B=30,n=R.length;
+  const x=i=>L+(W-L-Rp)*i/(n-1), ymax=8, y=v=>T+(H-T-B)*(1-v/ymax), y2=v=>T+(H-T-B)*(1-v);
+  let s='';
+  for(let v=0;v<=ymax;v+=2)s+=`<line x1="${L}" x2="${W-Rp}" y1="${y(v)}" y2="${y(v)}" stroke="#1d2026"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  for(let v=0;v<=1;v+=.5)s+=`<text x="${W-Rp+8}" y="${y2(v)+4}">${v*100}%</text>`;
+  R.forEach((r,i)=>{if(i%2==0)s+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${r.round}</text>`});
+  const line=(f,c,w,yy=y,dash='')=>`<polyline fill="none" stroke="${c}" stroke-width="${w}" ${dash} points="${R.map((r,i)=>x(i)+','+yy(f(r))).join(' ')}"/>`;
+  s+=line(r=>r.memory_hit_rate,'#3ecf8e',2,y2,'stroke-dasharray="5 5"');
+  s+=line(r=>r.all.calls,'#596070',2);s+=line(r=>r.graph.calls,'#6aa8ff',2.5);s+=line(r=>r.loadout.calls,'#ff5b2e',3.5);
+  s+=`<text x="${L}" y="${T-2}">calls / task</text><text x="${W-Rp}" y="${T-2}" text-anchor="end">memory hits</text><text x="${(W)/2}" y="${H}" text-anchor="middle">round</text>`;
+  $('#chart').innerHTML=s;
+}
+async function chips(){
+  const ex=await (await fetch('/api/examples')).json();
+  $('#chips').innerHTML='';ex.forEach(t=>{const c=document.createElement('span');c.className='chip';c.textContent=t;c.onclick=()=>{$('#task').value=t;go()};$('#chips').appendChild(c)});
+}
+let session={calls:0,saved:0};
+function ago(iso){const s=Math.max(0,Math.round((Date.now()-Date.parse(iso))/1000));return s<60?s+'s ago':Math.round(s/60)+'m ago'}
+async function go(){
+  const task=$('#task').value.trim(); if(!task)return; $('#run').disabled=true;
+  try{
+    const d=await (await fetch('/api/run',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({task,agent})})).json();
+    if(d.error){$('#result').innerHTML=`<p class="sub">${d.error}</p>`;return}
+    session.calls+=d.calls; session.saved+=d.remembered.length;
+    const pct=100*d.tokens_loaded/d.tokens_all;
+    const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const L=d.loaded.map(i=>`<div class="item"><span class="tag ${i.reason=='target'?'t-target':'t-dep'}">${i.reason=='target'?'TARGET':'NEEDED'}</span><code>${esc(i.name)}</code><small>${i.reason=='target'?'matches the task':(i.param?`gives <b>${esc(i.param)}</b> to ${esc(i.via)}`:`needed by ${esc(i.via)}`)} · ${i.tokens} tokens</small></div>`).join('');
+    const M=d.remembered.length?d.remembered.map(i=>`<div class="item"><span class="tag t-mem">REMEMBERED</span><code>${esc(i.name)}</code><small>resolved ${ago(i.resolved_at)} · no call, 0 schema tokens</small></div>`).join(''):`<p class="sub">Nothing yet. Run another task and lookups from this one show up here.</p>`;
+    $('#result').innerHTML=`
+      <div class="summary"><span>Loaded <b>${d.loaded.length}</b> of ${d.tools_total} tools</span><span><b>${fmt(d.tokens_loaded)}</b> tokens vs ${fmt(d.tokens_all)}</span><span class="pulse">Skipped <b>${d.remembered.length}</b> lookups from memory</span><span>This session: <b>${session.saved}</b> lookups skipped</span></div>
+      <div class="bar"><div style="width:${Math.max(.6,pct)}%"></div></div>
+      <div class="out"><div class="col"><h3>Loaded for this task</h3>${L}</div><div class="col"><h3>Already known</h3>${M}</div></div>`;
+  }finally{$('#run').disabled=false}
+}
+$('#run').onclick=go;$('#task').onkeydown=e=>{if(e.key==='Enter')go()};
+$('#reset').onclick=async()=>{await fetch('/api/reset',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({agent})});session={calls:0,saved:0};$('#result').innerHTML='<p class="sub">Memory cleared for this browser.</p>'};
+results();chips();
+</script>
+</body>
+</html>
