@@ -18,14 +18,14 @@ benchmark: 573 tools, each task with the ground-truth set of tools a successful 
 | Load all 573 tools | 100% | 6.0 | 60,861 |
 | Keyword search, top 12 tools | 3% | 7.0 | 1,279 |
 | Graph walk, no memory | 86% | 6.2 | 896 |
-| **Loadout** (graph walk + memory) | **86%** | **3.9** | **697** |
+| **Loadout** (graph walk + memory) | **86%** | **4.3** | **722** |
 
 Calls and tokens are averaged from round 3 on, once memory has warmed up. A task is covered when every tool
 its ground-truth run used is loaded, or already answered by fresh memory. A miss falls back to `find_tool`
 at one extra call, which the call count includes.
 
-**It improves with use.** Lookups answered from memory go from 34% in the first round to 47% on average after
-that. Tool calls per task drop from 6.2 to 3.9 (−37%) while coverage holds. The baseline without memory stays
+**It improves with use.** Lookups answered from memory go from 29% in the first round to 40% on average after
+that. Tool calls per task drop from 6.2 to 4.3 (−31%) while coverage holds. The baseline without memory stays
 flat. Setters keep it honest: `set_wifi_status` marks the remembered `get_wifi_status` stale, so memory never
 serves an answer the agent itself just changed.
 
