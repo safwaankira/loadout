@@ -6,7 +6,9 @@ made and is still fresh.
 
 ![Loadout](docs/screenshot.png)
 
-**Live demo:** _link below once deployed_ · **MCP endpoint:** `<host>/mcp`
+**Live demo:** https://loadout-zf6v.onrender.com · **MCP endpoint:** `https://loadout-zf6v.onrender.com/mcp`
+
+(Free hosting: the first visit after a quiet spell takes about a minute to wake up.)
 
 ## Results
 
@@ -29,6 +31,10 @@ that. Tool calls per task drop from 6.2 to 4.3 (−31%) while coverage holds. Th
 flat. Setters keep it honest: `set_wifi_status` marks the remembered `get_wifi_status` stale, so memory never
 serves an answer the agent itself just changed.
 
+Measured on HydraDB 0.4.0 (single node on Render's free tier, 0.1 CPU): planning a task takes 100 ms at p50
+and 193 ms at p95, including the dependency walk and the memory read. The embedded Kuzu backend gives the same
+numbers round for round.
+
 Reproduce: `python -m loadout.evaluate 600` writes `web/results.json`. The live server reruns it on HydraDB at
 boot.
 
@@ -49,7 +55,7 @@ plan is a traversal:
 ## Use it from your agent
 
 ```json
-{ "mcpServers": { "loadout": { "type": "http", "url": "https://<host>/mcp" } } }
+{ "mcpServers": { "loadout": { "type": "http", "url": "https://loadout-zf6v.onrender.com/mcp" } } }
 ```
 
 - `get_context(task, agent)` returns the tool schemas to load and the answers already known.

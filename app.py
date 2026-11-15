@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import contextlib
+import os
 import json
 import random
 import re
 from pathlib import Path
 
 from mcp.server.mcpserver import MCPServer
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import FileResponse, JSONResponse
@@ -137,7 +139,14 @@ async def report_run(task: str, results: dict, agent: str = "default") -> dict:
     return await lo.report(agent_of(agent), task_of(task), results, now_utc())
 
 
-mcp_app = mcp.streamable_http_app()
+HOSTS = [h for h in os.environ.get("LOADOUT_HOSTS", "loadout-zf6v.onrender.com").split(",") if h]
+mcp_app = mcp.streamable_http_app(
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=[*HOSTS, "localhost:*", "127.0.0.1:*"],
+        allowed_origins=[*(f"https://{h}" for h in HOSTS), "http://localhost:*", "http://127.0.0.1:*"],
+    )
+)
 
 
 @contextlib.asynccontextmanager
